@@ -2,6 +2,8 @@
 
 Install using Ansible Galaxy
 --------------
+
+[![Join the chat at https://gitter.im/basho-labs/ansible-riak](https://badges.gitter.im/basho-labs/ansible-riak.svg)](https://gitter.im/basho-labs/ansible-riak?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 `$ ansible-galaxy install christophermancini.riak-kv`
 
 This role will setup Riak on a node. It will ***not*** build a cluster.  In order to build a cluster, use one of the example playbooks defined below.
