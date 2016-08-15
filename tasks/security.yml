@@ -23,6 +23,6 @@
   when: riak_sources is defined
 
 - name: Set security permissions
-  command: '{{ riak_admin }} security grant {{ item.permissions }} on {{ item.container }} to {{ item.subject }}'
+  command: '{{ riak_admin }} security grant {{ item.permissions }} on {{ item.bucket }} to {{ item.subject }}'
   with_items: '{{ riak_grants }}'
   when: riak_grants is defined
