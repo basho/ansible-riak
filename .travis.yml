@@ -24,7 +24,7 @@ env:
   - ANSIBLE_HOST_KEY_CHECKING=False
 
 script:
-  - ansible-playbook tests/test.yml -v -i tests/inventory
+  - PATH=$PATH:/usr/local/bin ansible-playbook tests/test.yml -v -i tests/inventory
   - 'curl -XPOST http://localhost:8098/types/counters/buckets/mybucket/datatypes/mycounter  -H "Content-Type: application/json"  -d ''{"increment": 0}'''
   - curl http://localhost:8098/types/counters/buckets/mybucket/datatypes/mycounter
 
