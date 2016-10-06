@@ -23,7 +23,9 @@ install:
 
 script:
   # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - ansible-playbook tests/test.yml -v -i tests/inventory --syntax-check
+  - curl -XPOST http://localhost:8098/types/counters/buckets/mybucket/datatypes/mycounter  -H "Content-Type: application/json"  -d '{"increment": 0}'
+  - curl http://localhost:8098/types/counters/buckets/mybucket/datatypes/mycounter
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

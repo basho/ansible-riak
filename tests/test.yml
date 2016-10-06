@@ -13,3 +13,21 @@
       - { name: counters, props: '{"props":{"datatype":"counter"}}' }
       - { name: maps, props: '{"props":{"datatype":"map"}}' }
       - { name: sets, props: '{"props":{"datatype":"set"}}' }
+
+    riak_users:
+      - {user: 'riakuser', password: '', cert: '', groups: ''}
+      - {user: 'riakpass', password: 'Test1234', cert: '', groups: ''}
+      - {user: 'riakadmin', password: '', cert: '', groups: 'admins'}
+      - {user: 'riakdeveloper', password: '', cert: '', groups: 'developers'}
+
+    riak_groups:
+      - admins
+      - developers
+
+    riak_sources:
+      - {user: 'riakuser', type: 'certificate', cidr: '0.0.0.0/0'}
+      - {user: 'riakpass', type: 'password', cidr: '0.0.0.0/0'}
+
+    riak_grants:
+      - {subject: 'riakuser', scope: 'any', permissions: 'riak_kv.get,riak_kv.put'}
+      - {subject: 'riakpass', scope: 'any', permissions: 'riak_kv.get,riak_kv.put'}
