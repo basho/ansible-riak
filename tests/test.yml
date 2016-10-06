@@ -2,7 +2,7 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - basho-labs.riak-kv
+    - ansible-riak
   vars:
     riak_pb_bind_ip: 127.0.0.1
     riak_pb_port:    8087
