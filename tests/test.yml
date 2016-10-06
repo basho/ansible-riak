@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - basho-labs.riak-kv
+  vars:
+    riak_pb_bind_ip: 127.0.0.1
+    riak_pb_port:    8087
+    riak_http_bind_ip: 127.0.0.1
+    riak_http_port:    8098
+
+    riak_bucket_types:
+      - { name: counters, props: '{"props":{"datatype":"counter"}}' }
+      - { name: maps, props: '{"props":{"datatype":"map"}}' }
+      - { name: sets, props: '{"props":{"datatype":"set"}}' }
