@@ -6,25 +6,27 @@ sudo: required
 dist: trusty
 
 addons:
-  apt:
-    packages:
-    - python-pip
+  hosts:
+    - riak-test
 
 install:
-  # Install ansible
-  - pip install ansible
+  - sudo apt-get install -y software-properties-common python-software-properties
+  - sudo add-apt-repository -y ppa:ansible/ansible
+  - sudo apt-get update -y
+  - sudo apt-get install -y ansible
+  - echo 'riak-test' | sudo tee -a /etc/ansible/hosts
 
   # Check ansible version
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
-  - 'printf ''[defaults]\nroles_path=../'' >ansible.cfg'
+  - 'printf "[defaults]\nroles_path=../" > ansible.cfg'
 
 env:
   - ANSIBLE_HOST_KEY_CHECKING=False
 
 script:
-  - ansible-playbook tests/test.yml -v -i tests/inventory
+  - ansible-playbook tests/test.yml -v
   - 'curl -XPOST http://localhost:8098/types/counters/buckets/mybucket/datatypes/mycounter  -H "Content-Type: application/json"  -d ''{"increment": 0}'''
   - curl http://localhost:8098/types/counters/buckets/mybucket/datatypes/mycounter
 
