@@ -22,6 +22,7 @@ install:
 
 env:
   - ANSIBLE_HOST_KEY_CHECKING=False
+  - WAIT_FOR_ERLANG=30
 
 script:
   - ansible-playbook tests/test.yml -v -i tests/inventory
