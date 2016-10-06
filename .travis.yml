@@ -21,7 +21,7 @@ install:
   - 'printf ''[defaults]\nroles_path=../'' >ansible.cfg'
 
 env:
-  - ANSIBLE_HOST_KEY_CHECKING=False WAIT_FOR_ERLANG=60
+  - ANSIBLE_HOST_KEY_CHECKING=False
 
 script:
   - ansible-playbook tests/test.yml -v -i tests/inventory
