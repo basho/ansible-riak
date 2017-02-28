@@ -7,6 +7,14 @@
   include: Debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: Create Riak runit service directory
+  file: dest="{{ riak_runit_service_dir | mandatory }}/riak" state=directory
+  when: 'riak_os_init == "runit"'
+
+- name: Create Riak runit service
+  copy: src=etc_service_riak_run dest="{{ riak_runit_service_dir | mandatory }}/riak/run" owner=root group=root mode=0755
+  when: 'riak_os_init == "runit"'
+
 - name: mount the riak volume with optmized settings
   mount: name={{ riak_mountpoint }} src={{ riak_partition }} opts="{{riak_mount_options}}" fstype="{{riak_filesystem}}" state=mounted
   when: riak_tune_disks
@@ -43,6 +51,11 @@
 
 - name: Reboot Riak to accept the new config and ensure it is enabled to start at bootup
   service: name=riak enabled=yes state=restarted
+  when: 'riak_os_init != "runit"'
+
+- name: Reboot Riak to accept the new config and ensure it is enabled to start at bootup
+  command: sv restart riak
+  when: 'riak_os_init == "runit"'
 
 - name: Wait for Riak to start up before continuing
   wait_for: "delay=5 timeout=30 host={{ riak_pb_bind_ip }} port={{ riak_pb_port }} state=started"
