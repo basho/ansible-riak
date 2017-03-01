@@ -66,6 +66,9 @@ riak_tune_disks:    false
 riak_tune_os:       false
 riak_scheduler:     noop
 
+# riak_os_init: runit
+# riak_runit_service_dir: /var/service
+
 
 # Create bucket types
 #
