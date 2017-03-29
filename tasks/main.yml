@@ -42,8 +42,12 @@
   when: riak_package == "riak-ts" and riak_shell_nodes is defined
 
 - name: Reboot Riak to accept the new config and ensure it is enabled to start at bootup
-  service: name=riak enabled=yes state=restarted
-  when: riak_init_system == 'system'
+  debug:
+    msg: "Trigger Riak restart"
+  notify: restart riak and ensure enabled
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points, in order to ensure that Riak has been restarted and is starting up
+  meta: flush_handlers
 
 - name: Wait for Riak to start up before continuing
   wait_for: "delay=5 timeout=30 host={{ riak_pb_bind_ip }} port={{ riak_pb_port }} state=started"

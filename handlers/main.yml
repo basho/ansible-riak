@@ -2,6 +2,10 @@
 - name: run riak_disk_tune
   command: /bin/bash /usr/local/bin/riak_disk_tune.sh
 
+- name: restart riak and ensure enabled
+  service: name=riak enabled=yes state=restarted
+  when: riak_init_system == 'system'
+
 - name: wait for http
   wait_for: port={{ riak_http_port }}
 
