@@ -50,6 +50,7 @@
 
 - name: Bucket operations
   include: buckets.yml
+  when: riak_bucket_types is defined
 
 - name: Security operations
   include: security.yml
