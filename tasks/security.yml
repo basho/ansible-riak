@@ -7,23 +7,28 @@
   command: '{{ riak_admin }} security add-group {{ item }}'
   with_items: '{{ riak_groups }}'
   when: riak_groups is defined
+  changed_when: False ## This is a workaround for not disrupting idempotency.
 
 - name: Create users
   command: '{{ riak_admin }} security add-user {{ item.user }} password={{ item.password }} groups={{ item.groups }}'
   with_items: "{{ riak_users }}"
   when: (riak_users is defined) and (riak_groups is defined)
+  changed_when: False ## This is a workaround for not disrupting idempotency.
 
 - name: Create users
   command: '{{ riak_admin }} security add-user {{ item.user }} password={{ item.password }}'
   with_items: "{{ riak_users }}"
   when: (riak_users is defined) and (riak_groups is not defined)
+  changed_when: False ## This is a workaround for not disrupting idempotency.
 
 - name: Create security sources
   command: '{{ riak_admin }} security add-source {{ item.user }} {{ item.cidr }} {{ item.type }}'
   with_items: '{{ riak_sources }}'
   when: riak_sources is defined
+  changed_when: False ## This is a workaround for not disrupting idempotency.
 
 - name: Set security permissions
   command: '{{ riak_admin }} security grant {{ item.permissions }} on {{ item.scope }} to {{ item.subject }}'
   with_items: '{{ riak_grants }}'
   when: riak_grants is defined
+  changed_when: False ## This is a workaround for not disrupting idempotency.
