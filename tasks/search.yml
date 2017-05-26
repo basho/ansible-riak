@@ -1,0 +1,30 @@
+---
+- name: Wait for Yokozuna to start up before continuing
+  command: '{{ riak_admin }} wait-for-service yokozuna'
+  changed_when: False
+
+- name: Check that temporary variable to be used for search schema is unused
+  assert: { that: search_schema_result is not defined }
+
+- name: Create Solr schema if not existing
+  include: search_schema.yml
+  with_dict: '{{ riak_search_schemas }}'
+  loop_control:
+    loop_var: search_schema
+  when: riak_search_schemas is defined
+
+- name: Clear temporary variable used for search schema
+  set_fact: { search_schema_result: null }
+
+- name: Check that temporary variable to be used for search index is unused
+  assert: { that: search_index_result is not defined}
+
+- name: Create Solr index if not existing
+  include: search_index.yml
+  with_dict: '{{ riak_search_indexes }}'
+  loop_control:
+    loop_var: search_index
+  when: riak_search_indexes is defined
+
+- name: Clear temporary variable used for search index
+  set_fact: { search_index_result: null }

@@ -19,14 +19,29 @@ install:
   # Check ansible version
   - ansible --version
 
-  # Create ansible.cfg with correct roles_path
-  - 'printf "[defaults]\nroles_path=../" > ansible.cfg'
+  # Create ansible.cfg with correct roles_path and log file path
+  - touch ansible.log && { printf "[defaults]\nroles_path=../\nlog_path=ansible.log" > ansible.cfg; }
 
 env:
   - ANSIBLE_HOST_KEY_CHECKING=False
 
 script:
-  - ansible-playbook tests/test.yml -v
+  - >
+    ansible-playbook tests/test.yml -v
+    -e docsschema_abspath="${TRAVIS_BUILD_DIR:?}/tests/schema.xml.crdtgeospatialrpt"
+  - >
+    ansible-playbook tests/test.yml -v
+    -e docsschema_abspath="${TRAVIS_BUILD_DIR:?}/tests/schema.xml.crdtgeospatialrpt"
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+after_failure:
+  - sudo tail -n 100 /var/log/syslog
+  - ls -l /var/log/riak
+  - ls /var/log/riak/error.log* && cat $(ls -tr /var/log/riak/error.log*)
+  - ls /var/log/riak/solr.log* && cat $(ls -tr /var/log/riak/solr.log*)
+  - cat ansible.log
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -12,10 +12,21 @@
     riak_http_bind_ip: 127.0.0.1
     riak_http_port:    8098
 
+    riak_search: 'on'
+
+    riak_search_schemas:
+      docsschema: { file: '{{ docsschema_abspath }}' }
+
+    riak_search_indexes:
+      docsidxcustom: { schema: '{"schema":"docsschema"}' }
+      docsidxdefault: { schema: '{"schema":"_yz_default"}' }
+
     riak_bucket_types:
       - { name: counters, props: '{"props":{"datatype":"counter"}}' }
       - { name: maps, props: '{"props":{"datatype":"map"}}' }
       - { name: sets, props: '{"props":{"datatype":"set"}}' }
+      - { name: docscustom, props: '{"props":{"datatype":"map","search_index":"docsidxcustom"}}' }
+      - { name: docsdefault, props: '{"props":{"datatype":"map","search_index":"docsidxdefault"}}' }
 
     riak_users:
       - {user: 'riakuser', password: '', cert: '', groups: ''}

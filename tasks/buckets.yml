@@ -1,6 +1,7 @@
 ---
 - name: Fetch existing bucket-types
   command: '{{ riak_admin }} bucket-type list'
+  changed_when: False
   register: types
 
 - name: Create bucket types only if not found in list

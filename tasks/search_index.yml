@@ -1,0 +1,26 @@
+---
+- set_fact: { search_index_result: null }
+
+- name: Attempt to retrieve Solr index {{ search_index.key }}
+  uri:
+    follow_redirects: none
+    method: GET
+    url: 'http://{{ riak_http_bind_ip }}:{{ riak_http_port }}/search/index/{{ search_index.key }}'
+    headers: {}
+    status_code: [404, 200]
+    return_content: no
+  changed_when: False
+  register: search_index_result
+
+- name: Create Solr index {{ search_index.key }} if not existing
+  uri:
+    follow_redirects: none
+    method: PUT
+    url: 'http://{{ riak_http_bind_ip }}:{{ riak_http_port }}/search/index/{{ search_index.key }}'
+    headers:
+      Content-Type: "application/json"
+    body_format: json
+    body: '{{ search_index.value["schema"] }}'
+    status_code: 204
+    return_content: no
+  when: search_index_result.status == 404

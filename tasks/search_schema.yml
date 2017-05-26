@@ -1,0 +1,26 @@
+---
+- set_fact: { search_schema_result: null }
+
+- name: Attempt to retrieve Solr schema {{ search_schema.key }}
+  uri:
+    follow_redirects: none
+    method: GET
+    url: 'http://{{ riak_http_bind_ip }}:{{ riak_http_port }}/search/schema/{{ search_schema.key }}'
+    headers: {}
+    status_code: [404, 200]
+    return_content: no
+  changed_when: False
+  register: search_schema_result
+
+- name: Create Solr schema {{ search_schema.key }} if not existing
+  uri:
+    follow_redirects: none
+    method: PUT
+    url: 'http://{{ riak_http_bind_ip }}:{{ riak_http_port }}/search/schema/{{ search_schema.key }}'
+    headers:
+      Content-Type: "application/xml"
+    body_format: raw
+    body: "{{ lookup('file', search_schema.value.file|quote ) }}"
+    status_code: 204
+    return_content: no
+  when: search_schema_result.status == 404

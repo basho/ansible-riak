@@ -74,6 +74,20 @@ riak_tune_os:       false
 riak_scheduler:     noop
 
 
+# Create Solr schemas
+#
+#riak_search_schemas:
+#  myschema1: { file: '/etc/mycustomschema' }
+riak_search_schemas: {}
+
+# Create Solr indexes
+#
+#riak_search_indexes:
+#  myidx1: { schema: '{"schema":"myschema1"}' }
+#  myidx2: { schema: '{"schema":"myschema1"}' }
+#  myidx3: { schema: '{"schema":"_yz_default"}' }
+riak_search_indexes: {}
+
 # Create bucket types
 #
 #riak_bucket_types:
