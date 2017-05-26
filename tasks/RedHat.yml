@@ -1,5 +1,5 @@
 ---
-- name: "Install Java & libselinux-python"
+- name: "Install libselinux-python"
   package: "name={{ item }} state=present"
   tags: RedHat
   with_items:

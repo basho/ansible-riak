@@ -1,18 +1,3 @@
 ---
 - name: run riak_disk_tune
   command: /bin/bash /usr/local/bin/riak_disk_tune.sh
-
-- name: wait for http
-  wait_for: port={{ riak_http_port }}
-
-- name: wait for kv
-  riak: wait_for_service=kv http_conn={{ riak_http_bind_ip }}:{{ riak_http_port }}
-
-- name: commit cluster changes
-  riak: command=commit http_conn={{ riak_http_bind_ip }}:{{ riak_http_port }}
-
-- name: wait for handoffs
-  riak: wait_for_handoffs=1200 http_conn={{ riak_http_bind_ip }}:{{ riak_http_port }}
-
-- name: wait for ring
-  riak: wait_for_ring=600 http_conn={{ riak_http_bind_ip }}:{{ riak_http_port }}
