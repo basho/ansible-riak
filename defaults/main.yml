@@ -25,6 +25,9 @@ riak_http_port:     8098
 riak_https_bind_ip: 0.0.0.0
 riak_https_port:    10011
 
+riak_solr_port:     8093
+riak_solr_jmx_port: 8985
+
 riak_ring_size:     64
 riak_backend:       bitcask
 riak_control:       'off'

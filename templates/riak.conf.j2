@@ -589,7 +589,7 @@ search.solr.start_timeout = 30s
 ##
 ## Acceptable values:
 ##   - an integer
-search.solr.port = 8093
+search.solr.port = {{ riak_solr_port }}
 
 ## The port number which Solr JMX binds to.
 ## NOTE: Binds on every interface.
@@ -598,7 +598,7 @@ search.solr.port = 8093
 ##
 ## Acceptable values:
 ##   - an integer
-search.solr.jmx_port = 8985
+search.solr.jmx_port = {{ riak_solr_jmx_port }}
 
 ## The options to pass to the Solr JVM.  Non-standard options,
 ## i.e. -XX, may not be portable across JVM implementations.
